@@ -1,0 +1,268 @@
+{
+  "source": {
+    "file": "branch_operations_2025.csv",
+    "dataRows": 16,
+    "lineEnding": "CRLF",
+    "trailingNewline": false
+  },
+  "issues": [
+    {
+      "id": "missing-segments-2025-Q3",
+      "severity": "high",
+      "category": "completeness",
+      "title": "2025-Q3 is incomplete: 4 of 6 segments reported",
+      "summary": "2025-Q3 has no rows for South · Standard and West · Standard (2 of 6 segments). Nothing was estimated; the quarter is marked as partial.",
+      "detail": "No row exists for South · Standard and West · Standard in 2025-Q3. Every other quarter has all 6 region × tier segments, so 2025-Q3 totals (revenue, active clients, tickets) are not comparable with earlier quarters. The prior-quarter flow would put their opening active clients at South · Standard ≈ 292, West · Standard ≈ 309.",
+      "recordIds": [],
+      "handling": "Rows are NOT imputed. The dashboard flags the quarter as partial on the trend chart and in a notice, and offers a \"Complete data only\" switch that keeps only segments reported in every selected quarter.",
+      "rationale": "Revenue, tickets and resolution time cannot be derived from other columns, and a guessed number would look exactly like a real one. Showing the gap keeps every figure on screen traceable to a source row."
+    },
+    {
+      "id": "region-casing",
+      "severity": "medium",
+      "category": "consistency",
+      "title": "Region names in mixed case",
+      "summary": "2 rows had a region name in the wrong case (\"north\", \"WEST\"). Corrected.",
+      "detail": "record 102 has \"north\" (→ North); record 106 has \"WEST\" (→ West). Grouped as-is, \"North\" and \"north\" would become two separate regions.",
+      "recordIds": [
+        102,
+        106
+      ],
+      "handling": "Matched case-insensitively against the known regions (North, South, West) and rewritten in canonical Title Case.",
+      "rationale": "The branch name confirms the region in every affected row (each branch appears under exactly one region elsewhere), so the correction is certain, not a guess. Unknown spellings would be rejected rather than coerced."
+    },
+    {
+      "id": "missing-resolution-time",
+      "severity": "medium",
+      "category": "completeness",
+      "title": "Missing average resolution time",
+      "summary": "One row had no resolution time (\"N/A\"). Left blank and excluded from the resolution-time average.",
+      "detail": "record 106 has avg_resolution_hrs = \"N/A\" — a text placeholder in a numeric column. The row's other fields are complete.",
+      "recordIds": [
+        106
+      ],
+      "handling": "Stored as null (not 0). The record stays in every other KPI; the resolution-time average is taken over records that have a value, and the card says how many were excluded.",
+      "rationale": "Zero would claim the tickets were solved instantly and drag the average down; dropping the whole row would lose valid revenue and client figures. Filling from neighbours would invent a measurement."
+    },
+    {
+      "id": "precision-avg_resolution_hrs",
+      "severity": "low",
+      "category": "format",
+      "title": "Mixed number precision in avg_resolution_hrs",
+      "summary": "One row gave the resolution time with a different number of decimals. Same value; nothing changed.",
+      "detail": "Most values carry 1 decimal place, but record 114 does not (e.g. \"6\" where \"6.0\" is expected).",
+      "recordIds": [
+        114
+      ],
+      "handling": "Parsed as numbers, so \"6\" and \"6.0\" are the same value. Display precision is set by the UI, not the source.",
+      "rationale": "Harmless to the maths, but it hints at a hand-edited or differently exported row, worth telling the data owner."
+    },
+    {
+      "id": "file-format",
+      "severity": "info",
+      "category": "format",
+      "title": "File format",
+      "summary": "The file has Windows line endings and no line break after the last row. Read correctly; no rows affected.",
+      "detail": "The file uses CRLF (Windows) line endings, no newline after the last row.",
+      "recordIds": [],
+      "handling": "The parser accepts CRLF and LF, a missing final newline and a BOM; blank lines are skipped.",
+      "rationale": "A naive split on \"\\n\" leaves \"\\r\" glued to the last column (\"4.2\\r\"), which turns numbers into text. Handled in the parser so no value is affected."
+    },
+    {
+      "id": "active-clients-is-a-stock",
+      "severity": "info",
+      "category": "interpretation",
+      "title": "Active clients is a point-in-time count",
+      "summary": "Active clients is a start-of-quarter count, so the card shows the latest complete quarter, not a sum of quarters.",
+      "detail": "In all 10 consecutive-quarter pairs, next quarter's active_clients = active + new − churned of the quarter before, so active_clients is the opening client base of each quarter.",
+      "recordIds": [],
+      "handling": "Active clients (sum) adds up the filtered rows. The Active clients card shows the latest complete quarter; with several quarters selected, the sum is given beneath it on its own line (\"3-quarter sum\").",
+      "rationale": "The same client is counted once per quarter, so a multi-quarter sum is not a head count. The identity also validates the data: it holds for every pair of rows the file lets us check."
+    }
+  ],
+  "checks": [
+    {
+      "id": "all-rows-parsed",
+      "label": "Every row could be read",
+      "passed": true,
+      "detail": "16 of 16 rows usable"
+    },
+    {
+      "id": "unique-ids",
+      "label": "Record ids are unique",
+      "passed": true,
+      "detail": "16 distinct ids"
+    },
+    {
+      "id": "contiguous-ids",
+      "label": "Record ids have no gaps",
+      "passed": true,
+      "detail": "101–116 with no gaps: no row was dropped mid-file; the missing segments are absent from the export itself"
+    },
+    {
+      "id": "one-row-per-segment",
+      "label": "At most one row per quarter, region and tier",
+      "passed": true,
+      "detail": "no duplicated segment"
+    },
+    {
+      "id": "full-coverage",
+      "label": "Every quarter has every segment",
+      "passed": false,
+      "detail": "16 of 18 quarter × region × tier cells filled"
+    },
+    {
+      "id": "branch-region",
+      "label": "Each branch belongs to one region",
+      "passed": true,
+      "detail": "Oakridge Hub → North, Bayview Center → South, Summit Point → West"
+    },
+    {
+      "id": "churn-le-active",
+      "label": "Churned ≤ active clients",
+      "passed": true,
+      "detail": "holds in every row"
+    },
+    {
+      "id": "new-le-active",
+      "label": "New ≤ active clients",
+      "passed": true,
+      "detail": "holds in every row"
+    },
+    {
+      "id": "flow-identity",
+      "label": "Client counts add up from quarter to quarter",
+      "passed": true,
+      "detail": "active + new − churned = next quarter's active in 10 of 10 pairs"
+    }
+  ],
+  "coverage": [
+    {
+      "quarter": "2025-Q1",
+      "region": "North",
+      "tier": "Enterprise",
+      "recordId": 101,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q1",
+      "region": "North",
+      "tier": "Standard",
+      "recordId": 102,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q1",
+      "region": "South",
+      "tier": "Enterprise",
+      "recordId": 103,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q1",
+      "region": "South",
+      "tier": "Standard",
+      "recordId": 104,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q1",
+      "region": "West",
+      "tier": "Enterprise",
+      "recordId": 105,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q1",
+      "region": "West",
+      "tier": "Standard",
+      "recordId": 106,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q2",
+      "region": "North",
+      "tier": "Enterprise",
+      "recordId": 107,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q2",
+      "region": "North",
+      "tier": "Standard",
+      "recordId": 108,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q2",
+      "region": "South",
+      "tier": "Enterprise",
+      "recordId": 109,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q2",
+      "region": "South",
+      "tier": "Standard",
+      "recordId": 110,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q2",
+      "region": "West",
+      "tier": "Enterprise",
+      "recordId": 111,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q2",
+      "region": "West",
+      "tier": "Standard",
+      "recordId": 112,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q3",
+      "region": "North",
+      "tier": "Enterprise",
+      "recordId": 113,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q3",
+      "region": "North",
+      "tier": "Standard",
+      "recordId": 114,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q3",
+      "region": "South",
+      "tier": "Enterprise",
+      "recordId": 115,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q3",
+      "region": "South",
+      "tier": "Standard",
+      "recordId": null,
+      "derivableActiveClients": 292
+    },
+    {
+      "quarter": "2025-Q3",
+      "region": "West",
+      "tier": "Enterprise",
+      "recordId": 116,
+      "derivableActiveClients": null
+    },
+    {
+      "quarter": "2025-Q3",
+      "region": "West",
+      "tier": "Standard",
+      "recordId": null,
+      "derivableActiveClients": 309
+    }
+  ],
+  "rejected": []
+}

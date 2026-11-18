@@ -1,0 +1,17 @@
+record_id,quarter,region,branch_name,service_tier,active_clients,new_clients,churned_clients,revenue_usd,support_tickets,avg_resolution_hrs
+101,2025-Q1,North,Oakridge Hub,Enterprise,120,18,6,245000,42,4.2
+102,2025-Q1,north,Oakridge Hub,Standard,310,45,28,155000,115,6.8
+103,2025-Q1,South,Bayview Center,Enterprise,95,12,4,198000,31,3.9
+104,2025-Q1,South,Bayview Center,Standard,260,34,22,128000,98,7.1
+105,2025-Q1,West,Summit Point,Enterprise,140,22,8,290000,50,4.5
+106,2025-Q1,WEST,Summit Point,Standard,285,39,30,141000,104,N/A
+107,2025-Q2,North,Oakridge Hub,Enterprise,132,20,5,268000,38,3.8
+108,2025-Q2,North,Oakridge Hub,Standard,327,48,25,164000,108,6.4
+109,2025-Q2,South,Bayview Center,Enterprise,103,15,5,212000,29,3.7
+110,2025-Q2,South,Bayview Center,Standard,272,40,20,136000,92,6.5
+111,2025-Q2,West,Summit Point,Enterprise,154,24,7,318000,47,4.1
+112,2025-Q2,West,Summit Point,Standard,294,42,27,148000,99,6.9
+113,2025-Q3,North,Oakridge Hub,Enterprise,147,21,4,295000,35,3.5
+114,2025-Q3,North,Oakridge Hub,Standard,350,52,22,176000,102,6
+115,2025-Q3,South,Bayview Center,Enterprise,113,16,3,234000,26,3.4
+116,2025-Q3,West,Summit Point,Enterprise,171,26,6,352000,44,3.9

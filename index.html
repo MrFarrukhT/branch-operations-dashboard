@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Branch Operations 2025: revenue, client retention and support by region and service tier. A sample dashboard by Avada." />
+    <meta name="author" content="Avada · avada.uz" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>Branch Operations 2025</title>
+    <script>
+      // Apply a saved theme before first paint so the page never flashes.
+      try {
+        var t = localStorage.getItem('bod-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Recharts measures label widths in a span of this id and reuses one already there; made here hidden from page text
+         and readers (visibility keeps its size measurable), so the last measured tick no longer ends the page's text. -->
+    <span id="recharts_measurement_span" aria-hidden="true" style="visibility: hidden"></span>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
