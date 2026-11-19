@@ -100,7 +100,17 @@ tests/               unit tests
 
 ## Effort
 
-6 hours.
+About 6 hours in total.
+
+| Work | Hours |
+|---|---|
+| Reading the brief and the dataset, finding the data-quality issues | 0.5 |
+| Data cleaning step and its tests | 1.5 |
+| KPI cards and the two charts | 1.5 |
+| Filters and the sortable summary table | 1.0 |
+| Layout for desktop and phone, light and dark themes | 1.0 |
+| README, final checks and the live deploy | 0.5 |
+| **Total** | **6.0** |
 
 ---
 
